@@ -1,0 +1,20 @@
+# 한 머신에서 운영 프로필의 양방향 peer 복제를 검증하는 전용 구성입니다.
+services:
+  peer-a:
+    image: stockdrop/eureka:local
+    environment:
+      SPRING_PROFILES_ACTIVE: prod
+      EUREKA_HOSTNAME: peer-a
+      EUREKA_INSTANCE_ID: eureka-a
+      EUREKA_PEER_URL: http://peer-b:8761/eureka/
+    ports:
+      - "127.0.0.1:18761:8761"
+  peer-b:
+    image: stockdrop/eureka:local
+    environment:
+      SPRING_PROFILES_ACTIVE: prod
+      EUREKA_HOSTNAME: peer-b
+      EUREKA_INSTANCE_ID: eureka-b
+      EUREKA_PEER_URL: http://peer-a:8761/eureka/
+    ports:
+      - "127.0.0.1:18762:8761"

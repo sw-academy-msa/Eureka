@@ -1,0 +1,18 @@
+# 두 EC2 모두 이 프로필을 사용하며 서로 다른 노드 정보를 주입합니다.
+eureka:
+  instance:
+    hostname: ${EUREKA_HOSTNAME}
+    instance-id: ${EUREKA_INSTANCE_ID}
+    # 컨테이너 IP 대신 EC2 간 접근 가능한 hostname을 광고합니다.
+    prefer-ip-address: false
+  client:
+    register-with-eureka: true
+    fetch-registry: true
+    service-url:
+      # Map 키이므로 defaultZone의 대소문자를 유지해야 합니다.
+      defaultZone: ${EUREKA_PEER_URL}
+
+spring:
+  output:
+    ansi:
+      enabled: never

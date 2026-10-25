@@ -1,0 +1,21 @@
+# 각 EC2에서 같은 이미지와 다른 .env를 사용합니다.
+services:
+  eureka:
+    image: ${EUREKA_IMAGE:-stockdrop/eureka:local}
+    build: .
+    environment:
+      SPRING_PROFILES_ACTIVE: prod
+      EUREKA_HOSTNAME: ${EUREKA_HOSTNAME:?EC2 사설 IP 또는 내부 DNS를 지정하세요}
+      EUREKA_INSTANCE_ID: ${EUREKA_INSTANCE_ID:?고유 노드 ID를 지정하세요}
+      EUREKA_PEER_URL: ${EUREKA_PEER_URL:?상대 EC2의 Eureka URL을 지정하세요}
+    ports:
+      - "8761:8761"
+    restart: unless-stopped
+    stop_grace_period: 40s
+    healthcheck:
+      # 이 검사는 프로세스 상태이며 peer 복제 성공 여부는 별도로 확인합니다.
+      test: ["CMD", "wget", "-q", "--spider", "http://localhost:8761/actuator/health"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+      start_period: 60s

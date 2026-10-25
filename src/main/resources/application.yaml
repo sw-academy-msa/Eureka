@@ -1,0 +1,28 @@
+# 환경 공통 설정이며 운영 노드 정보는 prod 프로필에서 주입합니다.
+spring:
+  application:
+    name: eureka-server
+  profiles:
+    default: local
+  lifecycle:
+    timeout-per-shutdown-phase: 30s
+
+server:
+  port: 8761
+  shutdown: graceful
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info
+  endpoint:
+    health:
+      show-details: never
+      probes:
+        enabled: true
+
+eureka:
+  server:
+    # 네트워크 단절 때 정상 인스턴스를 대량 제거하지 않도록 유지합니다.
+    enable-self-preservation: true
