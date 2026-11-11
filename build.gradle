@@ -24,6 +24,8 @@ dependencyManagement {
 dependencies {
     implementation 'org.springframework.cloud:spring-cloud-starter-netflix-eureka-server'
     implementation 'org.springframework.boot:spring-boot-starter-actuator'
+    // Prometheus 수집 형식은 Boot BOM이 관리하는 Micrometer 버전으로 제공합니다.
+    implementation 'io.micrometer:micrometer-registry-prometheus'
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
     testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
 }
