@@ -30,8 +30,12 @@ management:
 
 eureka:
   server:
-    # 네트워크 단절 때 정상 인스턴스를 대량 제거하지 않도록 유지합니다.
-    enable-self-preservation: true
+    # 자기 보호 모드를 끕니다. 인스턴스 수가 적어(풀마다 2대) 서버 1대만 갑자기 죽어도 heartbeat가 절반 끊겨
+    # 보호 모드가 켜지고, 죽은 인스턴스가 목록에 남아 호출이 실패하기 때문입니다.
+    # 대신 Eureka와 서비스 사이 네트워크가 잠시 끊기면 정상 인스턴스도 만료되어 빠질 수 있으며, 다음 heartbeat에서 다시 등록됩니다.
+    enable-self-preservation: false
+    # 만료 검사 주기(기본 60초)를 줄여 heartbeat가 끊긴 인스턴스(기본 90초)를 늦지 않게 제거합니다.
+    eviction-interval-timer-in-ms: 5000
 
 # 업무 JWT와 분리된 읽기 전용 수집 토큰입니다. 빈 값이면 메트릭 접근을 거부합니다.
 monitoring:
